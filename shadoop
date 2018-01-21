@@ -1,0 +1,69 @@
+#!/bin/bash
+ rm -r /home/tmp/* 
+cd /usr/local/hadoop
+hadoop namenode -format 
+source /usr/local/hadoop/sbin/start-all.sh
+jps
+echo " hadoop started "
+rm -r /home/akshay/Desktop/input1
+rm -r /home/akshay/Desktop/input2
+rm -r /home/akshay/Desktop/input3
+rm -r /home/akshay/Desktop/input4
+rm -r /home/akshay/Desktop/input5
+
+hadoop dfs -rm -r /usr/local/hadoop/input*
+hadoop dfs -rm -r /usr/local/hadoop/output*
+hadoop dfs -rm -r /usr/local/hadoop/input0_0
+hadoop dfs -rm -r /usr/local/hadoop/input0/input*
+hadoop dfs -rm -r /usr/local/hadoop/input0/initial
+hadoop dfs -mkdir -p /usr/local/hadoop/input0_0
+
+hadoop dfs  -copyFromLocal /opt/lampp/htdocs/srd/upload/* /usr/local/hadoop/input0_0
+hadoop dfs -ls /usr/local/hadoop/input0_0
+hadoop dfs -mkdir -p /usr/local/hadoop/input0
+hadoop dfs -getmerge /usr/local/hadoop/input0_0  /usr/local/hadoop/input0/input00
+hadoop dfs -mkdir -p /usr/local/hadoop/initial
+hadoop dfs  -copyFromLocal /usr/local/hadoop/input0/input00 /usr/local/hadoop/initial
+hadoop jar /home/akshay/Desktop/task0.jar /usr/local/hadoop/initial  /usr/local/hadoop/output0 
+hadoop dfs -ls /usr/local/hadoop/output0
+hadoop dfs -get /usr/local/hadoop/output0/part-m-00000 /home/akshay/Desktop/input1
+chmod +x /home/akshay/Desktop/input1
+echo " 1st proccess completed"
+hadoop dfs -mkdir -p /usr/local/hadoop/input1
+hadoop dfs  -copyFromLocal /home/akshay/Desktop/input1 /usr/local/hadoop/input1
+hadoop dfs -ls /usr/local/hadoop/input1
+hadoop jar /home/akshay/Desktop/task1.jar /usr/local/hadoop/input1 /usr/local/hadoop/output1 
+hadoop dfs -ls /usr/local/hadoop/output1
+hadoop dfs -get /usr/local/hadoop/output1/part-r-00000 /home/akshay/Desktop/input2
+chmod +x /home/akshay/Desktop/input2
+echo " 2nd proccess completed"
+hadoop dfs -mkdir -p /usr/local/hadoop/input2
+hadoop dfs  -copyFromLocal /home/akshay/Desktop/input2 /usr/local/hadoop/input2
+hadoop dfs -ls /usr/local/hadoop/input2
+hadoop jar /home/akshay/Desktop/task2.jar /usr/local/hadoop/input2 /usr/local/hadoop/output2 
+hadoop dfs -ls /usr/local/hadoop/output2
+hadoop dfs -get /usr/local/hadoop/output2/part-r-00000 /home/akshay/Desktop/input3
+chmod +x /home/akshay/Desktop/input3
+echo " 3rd proccess completed"
+hadoop dfs -mkdir -p /usr/local/hadoop/input3
+hadoop dfs  -copyFromLocal /home/akshay/Desktop/input3 /usr/local/hadoop/input3
+hadoop dfs -ls /usr/local/hadoop/input3
+hadoop jar /home/akshay/Desktop/task3.jar /usr/local/hadoop/input3 /usr/local/hadoop/output3 
+hadoop dfs -ls /usr/local/hadoop/output3
+hadoop dfs -get /usr/local/hadoop/output3/part-r-00000 /home/akshay/Desktop/input4
+chmod +x /home/akshay/Desktop/input4
+echo " 4rd proccess completed"
+hadoop dfs -mkdir -p /usr/local/hadoop/input4
+hadoop dfs  -copyFromLocal /home/akshay/Desktop/input4 /usr/local/hadoop/input4
+hadoop dfs -ls /usr/local/hadoop/input4
+hadoop jar /home/akshay/Desktop/task4.jar /usr/local/hadoop/input4 /usr/local/hadoop/output4 
+hadoop dfs -ls /usr/local/hadoop/output4
+hadoop dfs -get /usr/local/hadoop/output4/part-m-00000 /home/akshay/Desktop/input5
+chmod +x /home/akshay/Desktop/input5
+echo " 5rd proccess completed"
+
+cd /usr/local/hadoop
+source /usr/local/hadoop/sbin/stop-all.sh
+echo " hadoop stopped ! Process completed "
+xdg-open https://google.com
+
